@@ -1,47 +1,264 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة الروابط</title>
+    <title>الروابط الاجتماعية - مرتضى البيضاني</title>
     <style>
+        :root {
+            --primary-color: #00b4d8;
+            --secondary-color: #2d3436;
+            --text-color: white;
+            --bg-gradient: linear-gradient(135deg, var(--secondary-color), #1a1a1a);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        .buttons-container {
+            background: var(--bg-gradient);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            color: var(--text-color);
+            position: relative;
+            transition: background 0.5s ease;
         }
-        .button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            margin: 10px;
-            width: 80%;
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            opacity: 1;
+            animation: fadeIn 1s ease;
+        }
+
+        .phone-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .phone-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .phone-number {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .social-buttons {
+            display: grid;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .social-button {
+            padding: 1rem;
+            border-radius: 15px;
             text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
-        .button:hover {
-            background-color: #45a049;
+
+        /* الإضافات الجديدة */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary-color);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+
+        .rating {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .rating .star {
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <h1>موقع الروابط الاجتماعية</h1>
-    <div class="buttons-container">
-        <a href="https://t.me/اسم_حسابك" class="button">حسابي على تيليجرام</a>
-        <a href="https://instagram.com/اسم_حسابك" class="button">حسابي على انستغرام</a>
-        <a href="https://facebook.com/اسم_حسابك" class="button">حسابي على فيسبوك</a>
-        <a href="https://twitter.com/اسم_حسابك" class="button">حسابي على تويتر</a>
+    <div class="scroll-progress" id="scrollProgress"></div>
+    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
+
+    <div id="particles-js"></div>
+    
+    <div class="container">
+        <div class="phone-card" id="phoneCard">
+            <div class="phone-content">
+                <i class="fas fa-phone-alt"></i>
+                <div class="phone-number">07821451917</div>
+            </div>
+            <i class="far fa-copy"></i>
+        </div>
+
+        <div class="social-buttons">
+            <a href="https://t.me/m_alb2" class="social-button telegram">
+                <i class="fab fa-telegram-plane"></i>
+                تيليجرام
+            </a>
+            <a href="https://instagram.com/mor1_93" class="social-button instagram">
+                <i class="fab fa-instagram"></i>
+                انستغرام
+            </a>
+            <a href="https://facebook.com/profile.php?id=100008640583144" class="social-button facebook">
+                <i class="fab fa-facebook-f"></i>
+                فيسبوك
+            </a>
+            <a href="https://twitter.com/username" class="social-button twitter">
+                <i class="fab fa-twitter"></i>
+                تويتر
+            </a>
+        </div>
+
+        <div class="rating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // تهيئة الجسيمات
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 40 },
+                color: { value: '#00b4d8' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5 },
+                size: { value: 2 },
+                move: {
+                    enable: true,
+                    speed: 1.5,
+                    out_mode: 'out'
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    resize: true
+                }
+            }
+        });
+
+        // تبديل السمة
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            themeToggle.innerHTML = document.body.classList.contains('light-theme') ? 
+                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        // شريط التقدم
+        window.addEventListener('scroll', () => {
+            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+        });
+
+        // زر العودة للأعلى
+        window.addEventListener('scroll', () => {
+            document.getElementById('backToTop').style.opacity = window.scrollY > 200 ? '1' : '0';
+        });
+
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // نظام التقييم
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', (e) => {
+                const value = e.target.dataset.value;
+                document.querySelectorAll('.star').forEach(s => {
+                    s.style.color = s.dataset.value <= value ? '#ffd700' : '#666';
+                });
+            });
+        });
+
+        // نسخ الرقم
+        document.getElementById('phoneCard').addEventListener('click', () => {
+            navigator.clipboard.writeText('07821451917');
+            alert('تم نسخ الرقم بنجاح!');
+        });
+    </script>
 </body>
 </html>
