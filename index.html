@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الروابط الاجتماعية - مرتضى البيضاني</title>
+    <title>معلومات التواصل - مرتضى البيضاني</title>
     <style>
         :root {
             --primary-color: #00b4d8;
@@ -22,12 +22,8 @@
         body {
             background: var(--bg-gradient);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: var(--text-color);
-            position: relative;
-            transition: background 0.5s ease;
+            overflow: auto;
         }
 
         #particles-js {
@@ -44,9 +40,8 @@
             z-index: 2;
             width: 100%;
             max-width: 600px;
-            padding: 2rem;
-            opacity: 1;
-            animation: fadeIn 1s ease;
+            margin: 2rem auto;
+            padding: 1rem;
         }
 
         .phone-card {
@@ -69,7 +64,7 @@
         }
 
         .phone-number {
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             font-weight: 600;
         }
 
@@ -91,73 +86,105 @@
             transition: all 0.3s ease;
         }
 
-        /* الإضافات الجديدة */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(255,255,255,0.1);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .scroll-progress {
+        .auth-modal {
             position: fixed;
             top: 0;
             left: 0;
-            height: 3px;
-            background: var(--primary-color);
-            z-index: 9999;
-            transition: width 0.3s ease;
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: var(--primary-color);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
             justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
+            align-items: center;
+            z-index: 9999;
         }
 
-        .rating {
+        .auth-box {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
             text-align: center;
+        }
+
+        .pin-input {
+            width: 100%;
+            padding: 1rem;
             margin: 1rem 0;
-        }
-
-        .rating .star {
             font-size: 1.5rem;
-            color: #666;
-            cursor: pointer;
-            transition: color 0.3s ease;
+            text-align: center;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            background: transparent;
+            color: white;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .bank-card {
+            background: linear-gradient(135deg, #1a1a1a, #2d3436);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            color: #ffd700; /* لون ذهبي للنص */
+            position: relative;
+            overflow: hidden;
+			display: none;
+        }
+
+.bank-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 45%,
+                rgba(255, 215, 0, 0.1) 50%,
+                transparent 55%
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .bank-card h3 {
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .bank-card p {
+            margin: 0.8rem 0;
+            font-size: 1.4rem;
+        }
+
+        .bank-card span {
+            color: white;
+            float: left;
+}
+        .secret-icon {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .secret-icon:hover {
+            color: var(--primary-color);
+        }
+
+        .error-msg {
+            color: #ff4444;
+            display: none;
+            margin-top: 1rem;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div class="scroll-progress" id="scrollProgress"></div>
-    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-    <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
-
     <div id="particles-js"></div>
     
     <div class="container">
@@ -166,7 +193,7 @@
                 <i class="fas fa-phone-alt"></i>
                 <div class="phone-number">07821451917</div>
             </div>
-            <i class="far fa-copy"></i>
+            <i class="fas fa-lock secret-icon" id="secretBtn"></i>
         </div>
 
         <div class="social-buttons">
@@ -182,19 +209,31 @@
                 <i class="fab fa-facebook-f"></i>
                 فيسبوك
             </a>
-            <a href="https://twitter.com/username" class="social-button twitter">
+            <a href="https://twitter.com/mortuza009" class="social-button twitter">
                 <i class="fab fa-twitter"></i>
                 تويتر
             </a>
+            <a href="https://tiktok.com/@alb.mm9?_t=ZS-8uls1mQyUZM&_r=1" class="social-button twitter">
+                <i class="fab fa-tiktok"></i>
+                تيك توك
+            </a>
         </div>
 
-        <div class="rating">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
+        <div class="auth-modal" id="authModal">
+            <div class="auth-box">
+                <h2>التحقق الأمني</h2>
+                <input type="password" class="pin-input" id="pinInput" placeholder="أدخل الرقم السري" maxlength="6">
+                <button class="social-button" onclick="checkPin()">تأكيد</button>
+                <p class="error-msg" id="errorMsg">الرقم السري غير صحيح!</p>
+            </div>
         </div>
+
+    <div class="bank-card" id="bankCard">
+        <h3><i class="fas fa-credit-card"></i> البطاقة البلاتينية</h3>
+        <p>الرقم: <span>**** 5678</span></p>
+        <p>الرصيد: <span>50,000 د.ع</span></p>
+        <p>تاريخ الانتهاء: <span>12/28</span></p>
+    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -202,7 +241,7 @@
         // تهيئة الجسيمات
         particlesJS('particles-js', {
             particles: {
-                number: { value: 40 },
+                number: { value: 30 },
                 color: { value: '#00b4d8' },
                 shape: { type: 'circle' },
                 opacity: { value: 0.5 },
@@ -216,45 +255,55 @@
             interactivity: {
                 detect_on: 'canvas',
                 events: {
+                    onhover: { enable: false },
                     resize: true
                 }
             }
         });
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('bankCard').style.display = 'none';
+        });
+        // نظام المصادقة
+        const secretBtn = document.getElementById('secretBtn');
+        const authModal = document.getElementById('authModal');
+        const pinInput = document.getElementById('pinInput');
+        const errorMsg = document.getElementById('errorMsg');
+        const bankCard = document.getElementById('bankCard');
 
-        // تبديل السمة
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            themeToggle.innerHTML = document.body.classList.contains('light-theme') ? 
-                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        secretBtn.addEventListener('click', () => {
+            authModal.style.display = 'flex';
         });
 
-        // شريط التقدم
-        window.addEventListener('scroll', () => {
-            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-            document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+        function checkPin() {
+            const correctPin = '248593';
+			const bankCard = document.getElementById('bankCard');
+            if(pinInput.value === correctPin) {
+                authModal.style.display = 'none';
+                bankCard.style.display = 'block';
+                errorMsg.style.display = 'none';
+                pinInput.value = '';
+            } else {
+                errorMsg.style.display = 'block';
+                pinInput.value = '';
+            }
+        }
+
+        authModal.addEventListener('click', (e) => {
+            if(e.target === authModal) {
+                authModal.style.display = 'none';
+                errorMsg.style.display = 'none';
+            }
         });
 
-        // زر العودة للأعلى
-        window.addEventListener('scroll', () => {
-            document.getElementById('backToTop').style.opacity = window.scrollY > 200 ? '1' : '0';
+        pinInput.addEventListener('input', () => {
+            pinInput.value = pinInput.value.replace(/\D/g, '');
         });
 
-        document.getElementById('backToTop').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        pinInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') checkPin();
         });
-
-        // نظام التقييم
-        document.querySelectorAll('.star').forEach(star => {
-            star.addEventListener('click', (e) => {
-                const value = e.target.dataset.value;
-                document.querySelectorAll('.star').forEach(s => {
-                    s.style.color = s.dataset.value <= value ? '#ffd700' : '#666';
-                });
-            });
-        });
-
-        // نسخ الرقم
+		
+		        // نسخ الرقم
         document.getElementById('phoneCard').addEventListener('click', () => {
             navigator.clipboard.writeText('07821451917');
             alert('تم نسخ الرقم بنجاح!');
